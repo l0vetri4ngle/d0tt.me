@@ -1,0 +1,42 @@
+:root {
+  color: #000000;
+  background: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: #ffffff; }
+body { padding: 16px 16px 48px; }
+a { color: #0000ee; text-decoration: underline; }
+a:visited { color: #0000ee; }
+a:hover, a:focus { color: #0000ee; }
+
+nav { display: flex; flex-direction: column; align-items: flex-start; gap: 0; }
+.home nav, .subpage nav { font-size: 44px; }
+.project-nav { font-size: 44px; }
+nav a { display: block; }
+main { max-width: 720px; }
+footer { position: fixed; left: 16px; bottom: 16px; font-size: 11px; }
+.page { padding-top: 16px; }
+.back { margin-bottom: 24px; }
+.note-list { display: grid; gap: 32px; margin-top: 28px; }
+.placeholder { width: 100%; aspect-ratio: 4 / 3; background: #0000ee; display: block; }
+.project-title, .project-description, .note-title, .note-excerpt { display: block; }
+.project-title, .note-title { margin-top: 6px; text-decoration: underline; }
+.project-description, .note-excerpt { margin-top: 2px; }
+h1, h2, p { font-size: inherit; font-weight: normal; margin: 0; }
+.prose { max-width: 620px; }
+.project-lede { margin-top: 4px; }
+.project-meta { margin-top: 24px; }
+.project-overview { margin-top: 24px; }
+.project-details { margin-top: 24px; }
+.project-details p { margin: 0 0 20px; }
+.note-date { display: block; margin-top: 4px; font-size: 11px; }
+.note-media-list { display: grid; gap: 16px; margin-top: 24px; }
+.note-media { display: block; max-width: 100%; height: auto; }
+.media { margin: 24px 0; max-width: 100%; }
+.media img, .media video { display: block; max-width: 100%; height: auto; }
+audio { width: min(420px, 100%); }
+small { font-size: inherit; }
