@@ -1,0 +1,17 @@
+:root { font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.25; color: #000; background: #fff; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: #fff; }
+body { padding: 16px; }
+a { color: #00e; text-decoration: underline; }
+a:visited { color: #551a8b; }
+nav { display: flex; flex-direction: column; align-items: flex-start; }
+nav a { display: block; }
+main { max-width: 720px; padding-top: 16px; }
+h1 { font-size: 16px; font-weight: normal; margin: 0; }
+.project-list { display: grid; gap: 32px; margin-top: 28px; }
+.project-card { display: block; max-width: 420px; color: #000; text-decoration: none; }
+.project-card:visited { color: #000; }
+.placeholder { width: 100%; aspect-ratio: 4 / 3; display: block; background: #00e; }
+.title { display: block; margin-top: 6px; text-decoration: underline; }
+.project-card > span:last-child { display: block; margin-top: 2px; }
+footer { position: fixed; left: 16px; bottom: 16px; font-size: 11px; }
