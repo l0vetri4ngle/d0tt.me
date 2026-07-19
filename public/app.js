@@ -200,6 +200,15 @@ const safeUrl = (value) => {
 const link = (href, label) => `<a href="${escapeHtml(safeUrl(href))}">${escapeHtml(label)}</a>`;
 const shell = (content, isHome) => `<nav>${isHome ? `${link('/', 'billy')} ${link('/projects', 'projects')} ${link('/research', 'research')} ${link('/about', 'about')} ${link('/notes', 'notes')}` : link('/', 'billy')}</nav>${content}<footer>Made with 🚛❤️ by Brandon</footer>`;
 
+function mediaBlock(item) {
+  const url = escapeHtml(safeUrl(item.url));
+  const alt = escapeHtml(item.alt || '');
+  if (item.type === 'image') return `<figure class="media-block media-image"><figcaption>image</figcaption><img src="${url}" alt="${alt}">${alt ? `<small>${alt}</small>` : ''}</figure>`;
+  if (item.type === 'audio') return `<div class="media-block media-audio"><p>audio</p><audio controls src="${url}"></audio></div>`;
+  if (item.type === 'video') return `<figure class="media-block media-video"><figcaption>video</figcaption><video controls src="${url}"></video>${alt ? `<small>${alt}</small>` : ''}</figure>`;
+  return `<div class="media-block media-link"><p>link</p>${link(item.url, item.alt || item.url)}</div>`;
+}
+
 function projectPage(project) {
   const details = project.details ? `<div class="prose project-details">${project.details.map(([label, text]) => `<p><strong>${label}</strong><br>${text}</p>`).join('')}</div>` : '';
   const metadata = project.role ? `<p class="prose project-meta"><strong>role</strong><br>${project.role}<br><br><strong>status</strong><br>${project.status}<br><br><strong>stack</strong><br>${project.stack}</p>` : '';
@@ -208,8 +217,8 @@ function projectPage(project) {
 }
 
 function notePage(note) {
-  const media = (note.media || []).map((item) => item.type === 'image' ? `<img class="note-media" src="${escapeHtml(safeUrl(item.url))}" alt="${escapeHtml(item.alt || '')}">` : item.type === 'audio' ? `<audio class="note-media" controls src="${escapeHtml(safeUrl(item.url))}"></audio>` : item.type === 'video' ? `<video class="note-media" controls src="${escapeHtml(safeUrl(item.url))}"></video>` : link(item.url, item.alt || item.url)).join('');
-  return `<section class="page"><p class="back">${link('/notes', '← notes')}</p><h1>${escapeHtml(note.title)}</h1><p class="note-date">${escapeHtml(note.date || '')}</p><p class="prose project-lede">${escapeHtml(note.excerpt)}</p><p class="prose project-overview">${escapeHtml(note.body)}</p><div class="note-media-list">${media}</div></section>`;
+  const media = (note.media || []).map(mediaBlock).join('');
+  return `<section class="page"><p class="back">${link('/notes', '← notes')}</p><h1>${escapeHtml(note.title)}</h1><p class="note-date">${escapeHtml(note.date || '')}</p><p class="prose project-lede">${escapeHtml(note.excerpt)}</p><div class="note-text-block prose">${escapeHtml(note.body)}</div><div class="note-media-list">${media}</div></section>`;
 }
 
 function render() {
