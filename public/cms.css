@@ -6,6 +6,8 @@ input, textarea { width: 100%; border: 1px solid #000; border-radius: 0; backgro
 textarea { resize: vertical; }
 input:focus, textarea:focus, button:focus { outline: 2px solid #0000ee; outline-offset: 2px; }
 .cms-actions { display: flex; gap: 8px; }
+.link-entry { display: grid; gap: 8px; border-left: 1px solid #000; padding-left: 12px; }
+.link-entry button { justify-self: start; }
 button { border: 1px solid #000; border-radius: 0; background: #fff; color: #000; font: inherit; padding: 8px 12px; cursor: pointer; }
 button:hover { background: #000; color: #fff; }
 #status { min-height: 1.25em; font-size: 11px; }
@@ -17,8 +19,6 @@ button:hover { background: #000; color: #fff; }
 #preview h1 { font-size: 24px; margin: 0 0 4px; }
 #preview .preview-date { font-size: 11px; margin-bottom: 16px; }
 #preview p { margin: 0 0 16px; white-space: pre-wrap; }
-#preview img, #preview video { display: block; max-width: 100%; margin-top: 16px; }
-#preview audio { margin-top: 16px; }
 .media-item { display: flex; gap: 8px; align-items: center; font-size: 11px; }
 .media-item button { padding: 2px 5px; }
 @media (max-width: 700px) { .cms-grid { grid-template-columns: 1fr; gap: 40px; } }

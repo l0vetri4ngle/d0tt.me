@@ -77,6 +77,15 @@ form.addEventListener('submit', async (event) => {
 });
 
 document.querySelector('#clear').addEventListener('click', clearForm);
+document.querySelector('#add-link').addEventListener('click', () => {
+  const url = document.querySelector('#link-url').value.trim();
+  const alt = document.querySelector('#link-label').value.trim() || url;
+  if (!url) { status('add a link URL first'); return; }
+  media.push({ type: 'link', url, alt });
+  document.querySelector('#link-url').value = '';
+  document.querySelector('#link-label').value = '';
+  renderMedia(); renderPreview(); status('link block ready');
+});
 document.querySelector('#media-file').addEventListener('change', async (event) => {
   const file = event.target.files[0];
   if (!file) return;
