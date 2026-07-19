@@ -51,6 +51,10 @@ The CMS currently supports plain text. Keep paragraphs readable and avoid
 putting secrets, credentials, or private personal information into notes or
 uploaded media.
 
+Images, audio, and video uploads become media blocks. Link blocks can be added
+with the `add link block` control. The public note renderer and CMS preview use
+the same flush, borderless block alignment.
+
 ## Static publishing
 
 GitHub Pages publishes the static `gh-pages` branch for `d0tt.me`. The custom
@@ -80,6 +84,7 @@ pushing the publishing branch.
 - Index and project-index navigation: `44px`
 - Footer credit: `11px`, fixed bottom-left
 - No gradients, shadows, rounded corners, or decorative UI
+- Note text and media blocks share a flush left edge and have no visible frame
 - Keep spacing and hierarchy sparse
 - Use lowercase interface labels unless a project name or proper noun requires
   otherwise

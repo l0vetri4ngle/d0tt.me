@@ -2,7 +2,7 @@
 aside { position: sticky; top: 16px; align-self: start; }
 .cms-label { font-size: 11px; margin: 0 0 16px; text-transform: lowercase; }
 form { display: grid; gap: 16px; max-width: 620px; }
-label { display: grid; gap: 4px; font-size: 11px; }
+label { display: grid; gap: 4px; font-size: 11px; text-transform: lowercase; }
 input, textarea { width: 100%; border: 1px solid #000; border-radius: 0; background: #fff; color: #000; font: inherit; padding: 8px; }
 textarea { resize: vertical; }
 input:focus, textarea:focus, button:focus { outline: 2px solid #0000ee; outline-offset: 2px; }
@@ -12,19 +12,34 @@ input:focus, textarea:focus, button:focus { outline: 2px solid #0000ee; outline-
 #media-list { display: grid; gap: 10px; }
 button { border: 1px solid #000; border-radius: 0; background: #fff; color: #000; font: inherit; padding: 8px 12px; cursor: pointer; }
 button:hover { background: #000; color: #fff; }
-#status { min-height: 1.25em; font-size: 11px; }
+.file-input-wrapper { display: grid; gap: 4px; }
+.file-input-label { font-size: 11px; text-transform: lowercase; }
+.file-input-hidden { width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1; }
+.file-input-button {
+  display: inline-block;
+  align-self: start;
+  justify-self: start;
+  border: 1px solid #000;
+  border-radius: 0;
+  background: #fff;
+  color: #000;
+  font: inherit;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-transform: lowercase;
+  font-size: 11px;
+  text-align: center;
+}
+.file-input-button:hover { background: #000; color: #fff; }
+#status { min-height: 1.25em; font-size: 11px; color: #0000ee; }
 .saved-note { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: baseline; border-bottom: 1px solid #000; padding: 8px 0; }
 .saved-note:first-child { border-top: 1px solid #000; }
-.saved-note a { cursor: pointer; }
+.saved-note a { cursor: pointer; text-decoration: underline; }
 .saved-note button { border: 0; padding: 0; text-decoration: underline; }
 .saved-note button:hover { background: transparent; color: #0000ee; }
 .preview-label { margin-top: 32px; }
 #preview { max-width: 620px; border: 1px solid transparent; padding: 16px 0; }
-#preview h1 { font-size: 28px; line-height: 1.05; margin: 0 0 6px; }
-#preview .preview-date { font-size: 11px; margin-bottom: 20px; }
-#preview > p { margin: 0 0 16px; white-space: pre-wrap; }
-#preview .note-text-block { margin: 20px 0 24px; border: 1px solid transparent; padding: 12px; white-space: pre-wrap; }
-.media-item { display: grid; gap: 8px; border: 1px solid transparent; padding: 10px; font-size: 11px; }
+.media-item { display: grid; gap: 8px; padding: 0 0 12px; font-size: 11px; }
 .media-item-head { display: flex; gap: 8px; align-items: baseline; min-width: 0; }
 .media-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .media-item-preview img { display: block; width: 96px; max-height: 64px; object-fit: cover; }
@@ -32,3 +47,4 @@ button:hover { background: #000; color: #fff; }
 .remove-media { justify-self: start; border: 0; padding: 0; text-decoration: underline; }
 .remove-media:hover { background: transparent; color: #0000ee; }
 @media (max-width: 700px) { aside { position: static; } .cms-grid { grid-template-columns: 1fr; gap: 40px; } }
+

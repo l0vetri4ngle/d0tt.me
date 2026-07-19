@@ -29,8 +29,24 @@ function renderMedia() {
 }
 
 function renderPreview() {
-  const mediaMarkup = media.map((item) => item.type === 'image' ? `<figure class="media-block media-image"><img src="${escapeHtml(safeUrl(item.url))}" alt="${escapeHtml(item.alt || '')}"></figure>` : item.type === 'audio' ? `<div class="media-block media-audio"><audio controls src="${escapeHtml(safeUrl(item.url))}"></audio></div>` : item.type === 'video' ? `<figure class="media-block media-video"><video controls src="${escapeHtml(safeUrl(item.url))}"></video></figure>` : `<div class="media-block media-link"><a href="${escapeHtml(safeUrl(item.url))}">${escapeHtml(item.alt || item.url)}</a></div>`).join('');
-  document.querySelector('#preview').innerHTML = `<h1>${escapeHtml(value('title') || 'untitled')}</h1><p class="preview-date">${escapeHtml(value('date'))}</p><p>${escapeHtml(value('excerpt'))}</p><div class="note-text-block">${escapeHtml(value('body'))}</div>${mediaMarkup}`;
+  const mediaMarkup = media.map((item) => {
+    const url = escapeHtml(safeUrl(item.url));
+    const alt = escapeHtml(item.alt || '');
+    if (item.type === 'image') return `<figure class="media-block media-image"><img src="${url}" alt="${alt}">${alt ? `<small>${alt}</small>` : ''}</figure>`;
+    if (item.type === 'audio') return `<div class="media-block media-audio"><audio controls src="${url}"></audio></div>`;
+    if (item.type === 'video') return `<figure class="media-block media-video"><video controls src="${url}"></video>${alt ? `<small>${alt}</small>` : ''}</figure>`;
+    return `<div class="media-block media-link"><a href="${url}">${alt || url}</a></div>`;
+  }).join('');
+
+  document.querySelector('#preview').innerHTML = `
+    <section class="page">
+      <h1>${escapeHtml(value('title') || 'untitled')}</h1>
+      <p class="note-date">${escapeHtml(value('date') || '')}</p>
+      <p class="prose project-lede">${escapeHtml(value('excerpt') || '')}</p>
+      <div class="note-text-block prose">${escapeHtml(value('body') || '')}</div>
+      <div class="note-media-list">${mediaMarkup}</div>
+    </section>
+  `;
 }
 
 function renderNotes() {
@@ -105,5 +121,19 @@ document.querySelector('#media-file').addEventListener('change', async (event) =
 });
 
 fields.forEach((field) => document.querySelector(`#${field}`).addEventListener('input', renderPreview));
+
+document.querySelector('#title').addEventListener('input', (event) => {
+  const originalSlug = document.querySelector('#original-slug').value;
+  if (!originalSlug) {
+    const slug = event.target.value
+      .toLowerCase()
+      .replace(/[^a-z0-9-]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 80);
+    setValue('slug', slug);
+    renderPreview();
+  }
+});
+
 clearForm();
 loadNotes().catch(() => status('could not load notes'));
