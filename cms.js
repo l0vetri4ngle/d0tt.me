@@ -19,7 +19,12 @@ const safeUrl = (value) => {
 };
 
 function renderMedia() {
-  document.querySelector('#media-list').innerHTML = media.map((item, index) => `<div class="media-item"><span>${escapeHtml(item.type)}: ${escapeHtml(item.alt || item.url)}</span><button type="button" data-remove-media="${index}">remove</button></div>`).join('');
+  document.querySelector('#media-list').innerHTML = media.map((item, index) => {
+    const url = escapeHtml(safeUrl(item.url));
+    const label = escapeHtml(item.alt || item.url);
+    const preview = item.type === 'image' ? `<img src="${url}" alt="">` : item.type === 'audio' ? '<span class="media-signal">audio ready</span>' : item.type === 'video' ? '<span class="media-signal">video ready</span>' : `<a href="${url}" target="_blank" rel="noopener">open link</a>`;
+    return `<div class="media-item"><div class="media-item-head"><span class="media-type">${escapeHtml(item.type)}</span><span class="media-name">${label}</span></div><div class="media-item-preview">${preview}</div><button class="remove-media" type="button" data-remove-media="${index}">remove</button></div>`;
+  }).join('');
   document.querySelectorAll('[data-remove-media]').forEach((button) => button.addEventListener('click', () => { media.splice(Number(button.dataset.removeMedia), 1); renderMedia(); renderPreview(); }));
 }
 
