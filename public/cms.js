@@ -6,19 +6,30 @@ let notes = [];
 const value = (id) => document.querySelector(`#${id}`).value;
 const setValue = (id, next) => { document.querySelector(`#${id}`).value = next || ''; };
 const status = (message) => { document.querySelector('#status').textContent = message; };
+const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+const safeUrl = (value) => {
+  const url = String(value || '').trim();
+  if (url.startsWith('/media/')) return url;
+  try {
+    const parsed = new URL(url, window.location.origin);
+    return ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : '#';
+  } catch {
+    return '#';
+  }
+};
 
 function renderMedia() {
-  document.querySelector('#media-list').innerHTML = media.map((item, index) => `<div class="media-item"><span>${item.type}: ${item.alt || item.url}</span><button type="button" data-remove-media="${index}">remove</button></div>`).join('');
+  document.querySelector('#media-list').innerHTML = media.map((item, index) => `<div class="media-item"><span>${escapeHtml(item.type)}: ${escapeHtml(item.alt || item.url)}</span><button type="button" data-remove-media="${index}">remove</button></div>`).join('');
   document.querySelectorAll('[data-remove-media]').forEach((button) => button.addEventListener('click', () => { media.splice(Number(button.dataset.removeMedia), 1); renderMedia(); renderPreview(); }));
 }
 
 function renderPreview() {
-  const mediaMarkup = media.map((item) => item.type === 'image' ? `<img src="${item.url}" alt="${item.alt || ''}">` : item.type === 'audio' ? `<audio controls src="${item.url}"></audio>` : `<video controls src="${item.url}"></video>`).join('');
-  document.querySelector('#preview').innerHTML = `<h1>${value('title') || 'untitled'}</h1><p class="preview-date">${value('date')}</p><p>${value('excerpt')}</p><p>${value('body')}</p>${mediaMarkup}`;
+  const mediaMarkup = media.map((item) => item.type === 'image' ? `<img src="${escapeHtml(safeUrl(item.url))}" alt="${escapeHtml(item.alt || '')}">` : item.type === 'audio' ? `<audio controls src="${escapeHtml(safeUrl(item.url))}"></audio>` : `<video controls src="${escapeHtml(safeUrl(item.url))}"></video>`).join('');
+  document.querySelector('#preview').innerHTML = `<h1>${escapeHtml(value('title') || 'untitled')}</h1><p class="preview-date">${escapeHtml(value('date'))}</p><p>${escapeHtml(value('excerpt'))}</p><p>${escapeHtml(value('body'))}</p>${mediaMarkup}`;
 }
 
 function renderNotes() {
-  document.querySelector('#notes-list').innerHTML = notes.map((note) => `<div class="saved-note"><a data-edit="${note.slug}">${note.title}</a><button type="button" data-delete="${note.slug}">delete</button></div>`).join('');
+  document.querySelector('#notes-list').innerHTML = notes.map((note) => `<div class="saved-note"><a data-edit="${escapeHtml(note.slug)}">${escapeHtml(note.title)}</a><button type="button" data-delete="${escapeHtml(note.slug)}">delete</button></div>`).join('');
   document.querySelectorAll('[data-edit]').forEach((item) => item.addEventListener('click', () => loadNote(item.dataset.edit)));
   document.querySelectorAll('[data-delete]').forEach((item) => item.addEventListener('click', () => deleteNote(item.dataset.delete)));
 }
@@ -57,7 +68,7 @@ function clearForm() {
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
-  const response = await fetch('/api/notes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug: value('slug'), title: value('title'), date: value('date'), excerpt: value('excerpt'), body: value('body'), media }) });
+  const response = await fetch('/api/notes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ originalSlug: value('original-slug'), slug: value('slug'), title: value('title'), date: value('date'), excerpt: value('excerpt'), body: value('body'), media }) });
   const result = await response.json();
   if (!response.ok) { status(result.error || 'could not save'); return; }
   await loadNotes();

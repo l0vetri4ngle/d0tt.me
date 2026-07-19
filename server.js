@@ -25,7 +25,7 @@ const mimeTypes = {
 
 function sendJson(response, status, payload) {
   const body = JSON.stringify(payload);
-  response.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8' });
+  response.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
   response.end(body);
 }
 
@@ -47,7 +47,8 @@ function readBody(request, limit = 12 * 1024 * 1024) {
 
 async function readNotes() {
   try {
-    return JSON.parse(await fs.promises.readFile(notesFile, 'utf8'));
+    const notes = JSON.parse(await fs.promises.readFile(notesFile, 'utf8'));
+    return Array.isArray(notes) ? notes : [];
   } catch {
     return [];
   }
@@ -55,7 +56,9 @@ async function readNotes() {
 
 async function writeNotes(notes) {
   await fs.promises.mkdir(contentDir, { recursive: true });
-  await fs.promises.writeFile(notesFile, `${JSON.stringify(notes, null, 2)}\n`, 'utf8');
+  const temporaryFile = `${notesFile}.tmp`;
+  await fs.promises.writeFile(temporaryFile, `${JSON.stringify(notes, null, 2)}\n`, 'utf8');
+  await fs.promises.rename(temporaryFile, notesFile);
 }
 
 function cleanSlug(value) {
@@ -77,15 +80,25 @@ async function handleApi(request, response, requestedPath) {
         return true;
       }
       const notes = await readNotes();
+      const originalSlug = cleanSlug(input.originalSlug);
+      const existingSlugIndex = notes.findIndex((item) => item.slug === slug);
+      if (existingSlugIndex !== -1 && notes[existingSlugIndex].slug !== originalSlug) {
+        sendJson(response, 409, { error: 'that slug is already in use' });
+        return true;
+      }
       const note = {
         slug,
         title: String(input.title).trim().slice(0, 160),
         date: String(input.date || new Date().toISOString().slice(0, 10)).slice(0, 10),
         excerpt: String(input.excerpt || '').trim().slice(0, 280),
         body: String(input.body).trim(),
-        media: Array.isArray(input.media) ? input.media.slice(0, 12).map((item) => ({ type: String(item.type || 'link'), url: String(item.url || ''), alt: String(item.alt || '') })) : []
+        media: Array.isArray(input.media) ? input.media.slice(0, 12).map((item) => ({
+          type: ['image', 'audio', 'video', 'link'].includes(item.type) ? item.type : 'link',
+          url: String(item.url || '').trim().slice(0, 2000),
+          alt: String(item.alt || '').trim().slice(0, 200)
+        })) : []
       };
-      const index = notes.findIndex((item) => item.slug === slug);
+      const index = originalSlug ? notes.findIndex((item) => item.slug === originalSlug) : -1;
       if (index === -1) notes.unshift(note);
       else notes[index] = note;
       await writeNotes(notes);
