@@ -36,7 +36,7 @@ h1, h2, p { font-size: inherit; font-weight: normal; margin: 0; }
 .note-date { display: block; margin-top: 4px; font-size: 11px; }
 .note-text-block { margin-top: 24px; white-space: pre-wrap; }
 .note-media-list { display: grid; gap: 16px; margin-top: 24px; }
-.media-block { margin: 0; padding: 0; max-width: 620px; }
+.media-block { margin: 0; border: 1px solid transparent; padding: 12px; max-width: 620px; }
 .media-block img, .media-block video { display: block; max-width: 100%; height: auto; }
 .media-block audio { display: block; width: 100%; }
 .media-block small { display: block; margin-top: 8px; font-size: 11px; }
