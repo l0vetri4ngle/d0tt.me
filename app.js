@@ -186,7 +186,18 @@ const defaultNotes = [
 let notes = defaultNotes;
 
 const app = document.querySelector('#app');
-const link = (href, label) => `<a href="${href}">${label}</a>`;
+const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+const safeUrl = (value) => {
+  const url = String(value || '').trim();
+  if (url.startsWith('/media/')) return url;
+  try {
+    const parsed = new URL(url, window.location.origin);
+    return ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : '#';
+  } catch {
+    return '#';
+  }
+};
+const link = (href, label) => `<a href="${escapeHtml(safeUrl(href))}">${escapeHtml(label)}</a>`;
 const shell = (content, isHome) => `<nav>${isHome ? `${link('/', 'billy')} ${link('/projects', 'projects')} ${link('/research', 'research')} ${link('/about', 'about')} ${link('/notes', 'notes')}` : link('/', 'billy')}</nav>${content}<footer>Made with 🚛❤️ by Brandon</footer>`;
 
 function projectPage(project) {
@@ -197,8 +208,8 @@ function projectPage(project) {
 }
 
 function notePage(note) {
-  const media = (note.media || []).map((item) => item.type === 'image' ? `<img class="note-media" src="${item.url}" alt="${item.alt || ''}">` : item.type === 'audio' ? `<audio class="note-media" controls src="${item.url}"></audio>` : item.type === 'video' ? `<video class="note-media" controls src="${item.url}"></video>` : link(item.url, item.alt || item.url)).join('');
-  return `<section class="page"><p class="back">${link('/notes', '← notes')}</p><h1>${note.title}</h1><p class="note-date">${note.date || ''}</p><p class="prose project-lede">${note.excerpt}</p><p class="prose project-overview">${note.body}</p><div class="note-media-list">${media}</div></section>`;
+  const media = (note.media || []).map((item) => item.type === 'image' ? `<img class="note-media" src="${escapeHtml(safeUrl(item.url))}" alt="${escapeHtml(item.alt || '')}">` : item.type === 'audio' ? `<audio class="note-media" controls src="${escapeHtml(safeUrl(item.url))}"></audio>` : item.type === 'video' ? `<video class="note-media" controls src="${escapeHtml(safeUrl(item.url))}"></video>` : link(item.url, item.alt || item.url)).join('');
+  return `<section class="page"><p class="back">${link('/notes', '← notes')}</p><h1>${escapeHtml(note.title)}</h1><p class="note-date">${escapeHtml(note.date || '')}</p><p class="prose project-lede">${escapeHtml(note.excerpt)}</p><p class="prose project-overview">${escapeHtml(note.body)}</p><div class="note-media-list">${media}</div></section>`;
 }
 
 function render() {
@@ -206,7 +217,7 @@ function render() {
   let content = '';
   if (path === '/') content = '';
   else if (path === '/projects') content = `<section class="page project-index"><nav class="project-nav">${projects.map((project) => link(`/projects/${project.slug}`, project.title)).join('')}</nav></section>`;
-  else if (path === '/notes') content = `<section class="page"><div class="note-list">${notes.map((note) => `<a href="/notes/${note.slug}"><span class="note-title">${note.title}</span><span class="note-excerpt">${note.excerpt}</span><span class="note-date">${note.date || ''}</span></a>`).join('')}</div></section>`;
+  else if (path === '/notes') content = `<section class="page"><div class="note-list">${notes.map((note) => `<a href="${escapeHtml(safeUrl(`/notes/${note.slug}`))}"><span class="note-title">${escapeHtml(note.title)}</span><span class="note-excerpt">${escapeHtml(note.excerpt)}</span><span class="note-date">${escapeHtml(note.date || '')}</span></a>`).join('')}</div></section>`;
   else if (path === '/research') content = `<section class="page"><p class="prose project-lede">Ongoing questions around creative tools, artificial intelligence, music, and interfaces that behave like instruments.</p><div class="prose project-details"><p><strong>audience as collaborator</strong><br>How can a livestream audience alter a performance without reducing participation to a reaction button? <a href="/projects/saisen">saisen</a> treats gifts as compositional actions: viewers add, erase, accelerate, and reshape a shared musical state.</p><p><strong>artificial voices and memory</strong><br>What makes an AI character feel situated rather than merely responsive? <a href="/projects/yomi">yomi</a> and <a href="/projects/kegare">kegare</a> explore persona files, local memory, voice, vision, and the ethics of keeping fiction recognizably fictional.</p><p><strong>interfaces for live attention</strong><br>Performance tools have to be legible while something else is already happening. <a href="/projects/himei">himei</a> and <a href="/projects/kasane">kasane</a> use fixed surfaces, immediate feedback, native audio paths, and visible state to reduce distance between intention and action.</p><p><strong>controlled chaos</strong><br>Randomness becomes useful when it can be bounded, repeated, inspected, and turned into a choice. <a href="/projects/nue">nue</a> and <a href="/projects/fumei">fumei</a> use variation as a design material rather than an excuse for an opaque result.</p><p><strong>small tools, larger worlds</strong><br><a href="/projects/otoma">otoma</a> and <a href="/projects/aomori">aomori</a> begin with one clear gesture—spin, rename—and grow outward into systems for discovery, curation, and making.</p><p><strong>working principles</strong><br>Keep the mechanism inspectable. Let the interface stay quiet. Prefer a strong verb over a crowded feature list. Make room for accidents, but give the user a way to understand and keep them.</p></div></section>`;
   else if (path === '/about') content = `<section class="page"><p class="prose project-lede">Brandon Ocampo is a creative visual designer and programmer working across artificial intelligence, music, live systems, and brutalist interfaces.</p><p class="prose project-overview">He releases music as Gokiburi, builds tools through kegareSoft, and treats software as both a medium and a place to think. The work moves between sound, image, performance, characters, and the systems that let other people participate.</p><div class="prose project-details"><p><strong>practice</strong><br>Creative direction, interaction design, visual systems, full-stack development, native macOS tools, audio engineering, and experimental AI.</p><p><strong>interests</strong><br>Artificial voices, synthetic memory, audience-controlled music, audiovisual performance, brutalism, generative images, unusual archives, and interfaces with a point of view.</p><p><strong>approach</strong><br>Build the smallest honest version first. Keep the underlying structure visible. Use restraint as a way to make behavior, sound, and ideas more noticeable.</p><p><strong>current work</strong><br>Developing a connected body of creative software—from music discovery and sample preparation to livestream agents, avatar systems, audio instruments, and a personal archive.</p></div></section>`;
   else {
