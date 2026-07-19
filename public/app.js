@@ -203,10 +203,10 @@ const shell = (content, isHome) => `<nav>${isHome ? `${link('/', 'billy')} ${lin
 function mediaBlock(item) {
   const url = escapeHtml(safeUrl(item.url));
   const alt = escapeHtml(item.alt || '');
-  if (item.type === 'image') return `<figure class="media-block media-image"><figcaption>image</figcaption><img src="${url}" alt="${alt}">${alt ? `<small>${alt}</small>` : ''}</figure>`;
-  if (item.type === 'audio') return `<div class="media-block media-audio"><p>audio</p><audio controls src="${url}"></audio></div>`;
-  if (item.type === 'video') return `<figure class="media-block media-video"><figcaption>video</figcaption><video controls src="${url}"></video>${alt ? `<small>${alt}</small>` : ''}</figure>`;
-  return `<div class="media-block media-link"><p>link</p>${link(item.url, item.alt || item.url)}</div>`;
+  if (item.type === 'image') return `<figure class="media-block media-image"><img src="${url}" alt="${alt}">${alt ? `<small>${alt}</small>` : ''}</figure>`;
+  if (item.type === 'audio') return `<div class="media-block media-audio"><audio controls src="${url}"></audio></div>`;
+  if (item.type === 'video') return `<figure class="media-block media-video"><video controls src="${url}"></video>${alt ? `<small>${alt}</small>` : ''}</figure>`;
+  return `<div class="media-block media-link">${link(item.url, item.alt || item.url)}</div>`;
 }
 
 function projectPage(project) {

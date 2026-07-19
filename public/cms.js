@@ -23,13 +23,13 @@ function renderMedia() {
     const url = escapeHtml(safeUrl(item.url));
     const label = escapeHtml(item.alt || item.url);
     const preview = item.type === 'image' ? `<img src="${url}" alt="">` : item.type === 'audio' ? '<span class="media-signal">audio ready</span>' : item.type === 'video' ? '<span class="media-signal">video ready</span>' : `<a href="${url}" target="_blank" rel="noopener">open link</a>`;
-    return `<div class="media-item"><div class="media-item-head"><span class="media-type">${escapeHtml(item.type)}</span><span class="media-name">${label}</span></div><div class="media-item-preview">${preview}</div><button class="remove-media" type="button" data-remove-media="${index}">remove</button></div>`;
+    return `<div class="media-item"><div class="media-item-head"><span class="media-name">${label}</span></div><div class="media-item-preview">${preview}</div><button class="remove-media" type="button" data-remove-media="${index}">remove</button></div>`;
   }).join('');
   document.querySelectorAll('[data-remove-media]').forEach((button) => button.addEventListener('click', () => { media.splice(Number(button.dataset.removeMedia), 1); renderMedia(); renderPreview(); }));
 }
 
 function renderPreview() {
-  const mediaMarkup = media.map((item) => item.type === 'image' ? `<figure class="media-block media-image"><figcaption>image</figcaption><img src="${escapeHtml(safeUrl(item.url))}" alt="${escapeHtml(item.alt || '')}"></figure>` : item.type === 'audio' ? `<div class="media-block media-audio"><p>audio</p><audio controls src="${escapeHtml(safeUrl(item.url))}"></audio></div>` : item.type === 'video' ? `<figure class="media-block media-video"><figcaption>video</figcaption><video controls src="${escapeHtml(safeUrl(item.url))}"></video></figure>` : `<div class="media-block media-link"><p>link</p><a href="${escapeHtml(safeUrl(item.url))}">${escapeHtml(item.alt || item.url)}</a></div>`).join('');
+  const mediaMarkup = media.map((item) => item.type === 'image' ? `<figure class="media-block media-image"><img src="${escapeHtml(safeUrl(item.url))}" alt="${escapeHtml(item.alt || '')}"></figure>` : item.type === 'audio' ? `<div class="media-block media-audio"><audio controls src="${escapeHtml(safeUrl(item.url))}"></audio></div>` : item.type === 'video' ? `<figure class="media-block media-video"><video controls src="${escapeHtml(safeUrl(item.url))}"></video></figure>` : `<div class="media-block media-link"><a href="${escapeHtml(safeUrl(item.url))}">${escapeHtml(item.alt || item.url)}</a></div>`).join('');
   document.querySelector('#preview').innerHTML = `<h1>${escapeHtml(value('title') || 'untitled')}</h1><p class="preview-date">${escapeHtml(value('date'))}</p><p>${escapeHtml(value('excerpt'))}</p><div class="note-text-block">${escapeHtml(value('body'))}</div>${mediaMarkup}`;
 }
 
