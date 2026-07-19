@@ -34,7 +34,7 @@ h1, h2, p { font-size: inherit; font-weight: normal; margin: 0; }
 .project-details { margin-top: 24px; }
 .project-details p { margin: 0 0 20px; }
 .note-date { display: block; margin-top: 4px; font-size: 11px; }
-.note-text-block { margin-top: 24px; white-space: pre-wrap; }
+.note-text-block { margin-top: 24px; border: 1px solid transparent; padding: 12px; white-space: pre-wrap; }
 .note-media-list { display: grid; gap: 16px; margin-top: 24px; }
 .media-block { margin: 0; border: 1px solid transparent; padding: 12px; max-width: 620px; }
 .media-block img, .media-block video { display: block; max-width: 100%; height: auto; }
