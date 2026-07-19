@@ -22,9 +22,8 @@ button:hover { background: #000; color: #fff; }
 #preview h1 { font-size: 24px; margin: 0 0 4px; }
 #preview .preview-date { font-size: 11px; margin-bottom: 16px; }
 #preview p { margin: 0 0 16px; white-space: pre-wrap; }
-.media-item { display: grid; gap: 8px; border: 1px solid #000; padding: 10px; font-size: 11px; }
+.media-item { display: grid; gap: 8px; padding: 4px 0 12px; font-size: 11px; }
 .media-item-head { display: flex; gap: 8px; align-items: baseline; min-width: 0; }
-.media-type { font-size: 10px; text-transform: lowercase; }
 .media-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .media-item-preview img { display: block; width: 96px; max-height: 64px; object-fit: cover; }
 .media-signal { display: block; color: #555; }
