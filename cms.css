@@ -23,7 +23,7 @@ button:hover { background: #000; color: #fff; }
 #preview h1 { font-size: 28px; line-height: 1.05; margin: 0 0 6px; }
 #preview .preview-date { font-size: 11px; margin-bottom: 20px; }
 #preview > p { margin: 0 0 16px; white-space: pre-wrap; }
-#preview .note-text-block { margin: 20px 0 24px; white-space: pre-wrap; }
+#preview .note-text-block { margin: 20px 0 24px; border: 1px solid transparent; padding: 12px; white-space: pre-wrap; }
 .media-item { display: grid; gap: 8px; border: 1px solid transparent; padding: 10px; font-size: 11px; }
 .media-item-head { display: flex; gap: 8px; align-items: baseline; min-width: 0; }
 .media-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
