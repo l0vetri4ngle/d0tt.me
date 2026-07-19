@@ -34,8 +34,13 @@ h1, h2, p { font-size: inherit; font-weight: normal; margin: 0; }
 .project-details { margin-top: 24px; }
 .project-details p { margin: 0 0 20px; }
 .note-date { display: block; margin-top: 4px; font-size: 11px; }
+.note-text-block { margin-top: 24px; white-space: pre-wrap; }
 .note-media-list { display: grid; gap: 16px; margin-top: 24px; }
-.note-media { display: block; max-width: 100%; height: auto; }
+.media-block { margin: 0; border: 1px solid #000000; padding: 12px; max-width: 620px; }
+.media-block figcaption, .media-block > p { margin: 0 0 10px; font-size: 11px; }
+.media-block img, .media-block video { display: block; max-width: 100%; height: auto; }
+.media-block audio { display: block; width: 100%; }
+.media-block small { display: block; margin-top: 8px; font-size: 11px; }
 .media { margin: 24px 0; max-width: 100%; }
 .media img, .media video { display: block; max-width: 100%; height: auto; }
 audio { width: min(420px, 100%); }

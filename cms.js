@@ -24,8 +24,8 @@ function renderMedia() {
 }
 
 function renderPreview() {
-  const mediaMarkup = media.map((item) => item.type === 'image' ? `<img src="${escapeHtml(safeUrl(item.url))}" alt="${escapeHtml(item.alt || '')}">` : item.type === 'audio' ? `<audio controls src="${escapeHtml(safeUrl(item.url))}"></audio>` : `<video controls src="${escapeHtml(safeUrl(item.url))}"></video>`).join('');
-  document.querySelector('#preview').innerHTML = `<h1>${escapeHtml(value('title') || 'untitled')}</h1><p class="preview-date">${escapeHtml(value('date'))}</p><p>${escapeHtml(value('excerpt'))}</p><p>${escapeHtml(value('body'))}</p>${mediaMarkup}`;
+  const mediaMarkup = media.map((item) => item.type === 'image' ? `<figure class="media-block media-image"><figcaption>image</figcaption><img src="${escapeHtml(safeUrl(item.url))}" alt="${escapeHtml(item.alt || '')}"></figure>` : item.type === 'audio' ? `<div class="media-block media-audio"><p>audio</p><audio controls src="${escapeHtml(safeUrl(item.url))}"></audio></div>` : item.type === 'video' ? `<figure class="media-block media-video"><figcaption>video</figcaption><video controls src="${escapeHtml(safeUrl(item.url))}"></video></figure>` : `<div class="media-block media-link"><p>link</p><a href="${escapeHtml(safeUrl(item.url))}">${escapeHtml(item.alt || item.url)}</a></div>`).join('');
+  document.querySelector('#preview').innerHTML = `<h1>${escapeHtml(value('title') || 'untitled')}</h1><p class="preview-date">${escapeHtml(value('date'))}</p><p>${escapeHtml(value('excerpt'))}</p><div class="note-text-block">${escapeHtml(value('body'))}</div>${mediaMarkup}`;
 }
 
 function renderNotes() {
