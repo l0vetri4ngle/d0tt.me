@@ -29,6 +29,11 @@
     "date": "2026-07-18",
     "excerpt": "A note on randomness, repetition, and keeping the result that surprises you.",
     "body": "Randomness is only useful when I can stay with it. I want to set a range, run the process again, understand what changed, and keep the accident that feels like a direction. Control and surprise are not opposites; they are a conversation.",
-    "media": []
+    "media": [
+      { "type": "image", "url": "/favicon.svg", "alt": "blue square test image" },
+      { "type": "audio", "url": "https://www.w3schools.com/html/horse.mp3", "alt": "sample audio block" },
+      { "type": "video", "url": "https://www.w3schools.com/html/mov_bbb.mp4", "alt": "sample video block" },
+      { "type": "link", "url": "/projects/fumei", "alt": "related project: fumei" }
+    ]
   }
 ]
