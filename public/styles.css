@@ -24,9 +24,7 @@ a { color: #0000ee; text-decoration: underline; }
 a:visited { color: #0000ee; }
 a:hover, a:focus { color: #0000ee; }
 
-nav { display: flex; flex-direction: column; align-items: flex-start; gap: 0; }
-.home nav, .subpage nav { font-size: 44px; }
-.project-nav { font-size: 44px; }
+nav { display: flex; flex-direction: column; align-items: flex-start; gap: 0; font-size: 44px; }
 nav a { display: block; }
 main { max-width: 720px; }
 footer { position: fixed; left: 16px; bottom: 16px; font-size: 11px; color: #555555; }

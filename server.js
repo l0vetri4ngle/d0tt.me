@@ -65,6 +65,31 @@ function cleanSlug(value) {
   return String(value || '').trim().toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
 }
 
+function mediaFilenameFromUrl(url) {
+  const match = /^\/media\/([a-zA-Z0-9._-]+)$/.exec(String(url || ''));
+  return match ? match[1] : null;
+}
+
+function collectMediaFilenames(notes) {
+  const filenames = new Set();
+  for (const note of notes) {
+    for (const item of note.media || []) {
+      const filename = mediaFilenameFromUrl(item.url);
+      if (filename) filenames.add(filename);
+    }
+  }
+  return filenames;
+}
+
+async function pruneOrphanedMedia(beforeNotes, afterNotes) {
+  const before = collectMediaFilenames(beforeNotes);
+  const after = collectMediaFilenames(afterNotes);
+  const orphaned = [...before].filter((filename) => !after.has(filename));
+  await Promise.all(orphaned.map((filename) =>
+    fs.promises.unlink(path.join(mediaDir, filename)).catch(() => {})
+  ));
+}
+
 async function handleApi(request, response, requestedPath) {
   if (requestedPath === '/api/notes' && request.method === 'GET') {
     sendJson(response, 200, await readNotes());
@@ -80,6 +105,7 @@ async function handleApi(request, response, requestedPath) {
         return true;
       }
       const notes = await readNotes();
+      const beforeNotes = notes.slice();
       const originalSlug = cleanSlug(input.originalSlug);
       const existingSlugIndex = notes.findIndex((item) => item.slug === slug);
       if (existingSlugIndex !== -1 && notes[existingSlugIndex].slug !== originalSlug) {
@@ -102,6 +128,7 @@ async function handleApi(request, response, requestedPath) {
       if (index === -1) notes.unshift(note);
       else notes[index] = note;
       await writeNotes(notes);
+      await pruneOrphanedMedia(beforeNotes, notes);
       sendJson(response, 200, note);
     } catch (error) {
       sendJson(response, error.message === 'payload too large' ? 413 : 400, { error: 'invalid note payload' });
@@ -114,6 +141,7 @@ async function handleApi(request, response, requestedPath) {
     const notes = await readNotes();
     const next = notes.filter((note) => note.slug !== slug);
     await writeNotes(next);
+    await pruneOrphanedMedia(notes, next);
     sendJson(response, 200, { ok: true });
     return true;
   }

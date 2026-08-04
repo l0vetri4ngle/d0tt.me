@@ -57,8 +57,10 @@ the same flush, borderless block alignment.
 
 ## Static publishing
 
-GitHub Pages publishes the static `gh-pages` branch for `d0tt.me`. The custom
-domain is declared in `public/CNAME` and the repository root `CNAME`.
+GitHub Pages is published by `.github/workflows/pages.yml` on every push to
+`main`: it runs `npm run prepare:pages`, uploads `public/` as the Pages
+artifact, and deploys it directly — there is no `gh-pages` branch. The custom
+domain is declared in `public/CNAME` for `d0tt.me`.
 
 Before a Pages deployment, synchronize CMS content and generate the single-page
 route fallback:
@@ -81,22 +83,30 @@ pushing the publishing branch.
 - Primary text: `#000000`
 - Link blue: `#0000EE`
 - Font: Arial, with Helvetica as fallback
-- Index and project-index navigation: `44px`
-- Footer credit: `11px`, fixed bottom-left
+- Navigation: `44px`, on every page including the CMS
+- Footer credit: `11px`, fixed bottom-left, on every page including the CMS
 - No gradients, shadows, rounded corners, or decorative UI
 - Note text and media blocks share a flush left edge and have no visible frame
-- Keep spacing and hierarchy sparse
+- Keep spacing and hierarchy sparse — margins and gaps sit on a 4px grid
 - Use lowercase interface labels unless a project name or proper noun requires
   otherwise
+- Use 6-digit hex (`#000000`, not `#000`) for color values
 
-The active site uses `public/styles.css`. The archived card layout has its own
+The active site uses `public/styles.css`. `public/cms.css` extends it with
+CMS-only form and preview styling and must stay consistent with these same
+tokens rather than introducing its own. The archived card layout has its own
 stylesheet and should not be treated as the active design system.
 
 ## Content structure
 
-Project and note data currently live in `public/app.js` as the client-side
-fallback and in `content/notes.json` for CMS-managed notes. When adding a
-project, keep the case-study fields consistent:
+Project data is hardcoded in `public/app.js` — there is no CMS for projects.
+Notes have no client-side fallback: `app.js` starts with an empty `notes`
+array and populates it by fetching `/api/notes` (local server) or falling
+back to `/notes.json` (static hosting); the source of truth is always
+`content/notes.json`, managed through the CMS. Rendering helpers shared
+between the public site and the CMS (`escapeHtml`, `safeUrl`, `link`,
+`mediaBlock`) live in `public/shared.js`, loaded before `app.js` and `cms.js`.
+When adding a project, keep the case-study fields consistent:
 
 - `slug`
 - `title`
@@ -120,6 +130,10 @@ local notes API, and accepts local media uploads:
 - `DELETE /api/notes/<slug>`
 - `POST /api/media`
 
+Saving or deleting a note automatically removes any `public/media/` files that
+are no longer referenced by any note (`pruneOrphanedMedia` in `server.js`).
+Only locally uploaded media is pruned this way; external links are left alone.
+
 Do not expose the CMS API publicly without adding authentication, upload limits,
 and a persistent storage strategy.
 
@@ -128,6 +142,7 @@ and a persistent storage strategy.
 Before handing off changes:
 
 ```bash
+node --check public/shared.js
 node --check public/app.js
 node --check public/cms.js
 node --check server.js
