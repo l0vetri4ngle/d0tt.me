@@ -155,6 +155,23 @@ const projects = [
       ['personal layer', 'Authenticated listeners get a profile: saved favorites, a bio, a spotlight favorite, sticky notes on the profile, and follower / following counts. The discovery gesture stays public while what someone found and kept becomes personal.'],
       ['miku mode', 'A hidden toggle switches the interface into Japanese and restricts every spin to two hand-picked Hatsune Miku tracks — a small, deliberately overbuilt easter egg living in the same codebase as the main discovery engine.']
     ]
+  },
+  {
+    slug: 'utsutsu',
+    title: 'utsutsu 現',
+    description: 'A screenshot tool for local web apps — a native macOS menu bar utility with a companion CLI, used to capture, gif, and review in-progress interface work.',
+    role: 'Product design, interaction design, and full-stack Swift / Node implementation',
+    status: 'Internal developer tool / ongoing — menu bar app is the primary interface, CLI kept for scripted use',
+    stack: 'Swift · AppKit · SwiftUI · WKWebView · Swift Package Manager · Node.js · Playwright (WebKit) · ImageIO',
+    overview: 'Utsutsu (現, "actuality") is the tool behind the tools: a screenshot utility purpose-built for capturing local web apps mid-development. A menu bar app opens a chrome-less preview window against any local URL, saves numbered screenshots on command, and can merge a capture run into an animated GIF. A CLI tool of the same name — the original version — still exists for scripted or terminal-based capture.',
+    details: [
+      ['menu bar app', 'Clicking the "u" menu bar icon opens a panel with a url and app-name field. "open" launches a chrome-less WKWebView preview window titled after the app name; cmd+s or the "capture" button in its title bar saves a numbered screenshot to ~/Desktop/&lt;app-name&gt;/.'],
+      ['window capture', 'A "window" button captures any other on-screen window — chosen through a custom in-app picker rather than Apple’s own screenshot tool — into the same numbered sequence as direct captures.'],
+      ['gif export', 'A "gif" button merges every screenshot captured so far for an app name, in capture order, into one looping animated GIF via Apple’s ImageIO — a batch step over existing PNGs, not a timer-based recording. Quality (resolution scale) and speed (per-frame delay) are both adjustable presets.'],
+      ['capture history', 'A translucent, horizontally scrolling thumbnail strip along the bottom of the preview window shows every screenshot captured for the current app name, loaded from disk on each open so history persists across sessions.'],
+      ['CLI tool', 'utsutsu.js, the original version, opens a WebKit window (via Playwright) against a dev server; pressing Enter captures the current view, and typing "full" captures the full page. Kept for scripted or terminal-based workflows, not deprecated.'],
+      ['safety and polish', 'App names are sanitized before touching the filesystem (blocking path traversal via ".." or "/"), long names truncate with a real ellipsis instead of clipping, and a full code-review pass fixed an unescaped-regex crash in the CLI, a misclassified dependency, and an unsanitized folder name before the first real capture session.']
+    ]
   }
 ];
 
