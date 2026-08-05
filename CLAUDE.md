@@ -139,6 +139,44 @@ Dedicated note routes are rendered as `/notes/<slug>`. `notesIndexPage()`
 sorts notes by `date` descending at render time, so entries in
 `content/notes.json` don't need to be stored in any particular order.
 
+## Project pages — visual direction (planned, not yet implemented)
+
+Project pages currently lead with prose: a lede, a role/status/stack block,
+then five or six detail paragraphs, with a single empty `.media.placeholder`
+div standing in for actual visuals. That order asks a reader to evaluate the
+work through description before they've seen any of it — backwards for a
+body of visual/interaction work, where the image is the pitch and the copy
+is annotation.
+
+The intended reorder, once real screenshots exist for a project (captured
+with `codeshit/utsutsu`, built for exactly this):
+
+1. **Hero visual first.** A real screenshot or short capture sequence
+   replaces `.media.placeholder` — but moves above the lede and metadata
+   in `projectPage()`, not after them. Same flush, borderless treatment
+   `mediaBlock()` already applies to note media — no new visual language,
+   just extending the one that exists.
+2. **Concept, tightened.** The lede and a short framing of the idea stay
+   near the top, close to the image — a caption more than a case study.
+   Design intent legible in a sentence or two, not a paragraph.
+3. **Engineering depth, demoted, not deleted.** The role/status/stack
+   metadata and the full detail-bullet breakdown (plugin internals, signal
+   flow, verification notes, etc.) move lower on the page. That depth is
+   real differentiation and stays — it just reads as supporting evidence
+   for someone who scrolls, not the entry point for someone scanning.
+4. **Process shots where they earn it**, not one hero image carrying the
+   whole page. A detail bullet describing a specific interaction (kasane's
+   plugin-chain drag, aomori's five-panel workspace) is a natural place for
+   a small inline image next to that specific claim, rather than all visual
+   proof living in a single lead image.
+
+This is a hierarchy change, not a content cut — nothing currently in
+`projectPage()`'s metadata or details gets removed, it moves down the page.
+The goal: someone evaluating craft sees proof of the work in the first two
+seconds, then the idea, then — for whoever keeps reading — how deep the
+build actually goes. Roll out one project at a time as screenshots are
+ready, not all at once.
+
 ## Server/API
 
 `server.js` is a small Node HTTP server. It serves static files, provides the
