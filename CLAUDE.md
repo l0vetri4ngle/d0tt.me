@@ -2,7 +2,7 @@
 
 ## Purpose
 
-`billy` is Brandon Ocampo’s minimal, brutalist portfolio and project archive. It
+`billy` is Billy’s minimal, brutalist portfolio and project archive. It
 showcases creative software, visual design, music systems, artificial
 intelligence, live performance tools, and experimental interfaces.
 
@@ -54,6 +54,11 @@ uploaded media.
 Images, audio, and video uploads become media blocks. Link blocks can be added
 with the `add link block` control. The public note renderer and CMS preview use
 the same flush, borderless block alignment.
+
+The saved-notes list's `edit` and `delete` controls (`public/cms.js`,
+`renderNotes()`) are both real `<button>` elements, not anchors — this keeps
+them keyboard-focusable and screen-reader-legible. Keep them as buttons if
+this markup changes.
 
 ## Static publishing
 
@@ -117,8 +122,22 @@ When adding a project, keep the case-study fields consistent:
 - `overview`
 - `details`
 
+The `projects` array in `public/app.js` is ordered newest first: add a new
+project at the top of the array. `otoma`, Billy's first project, is fixed at
+the bottom as the oldest entry, and the rest of the order reflects when each
+project was actually started — check the project's own repo history before
+inserting one in the middle rather than guessing from feel.
+
+`projectPage()` HTML-escapes every project text field (`title`, `description`,
+`role`, `status`, `stack`, `overview`, and each `details` label/text) before
+rendering. Write plain characters (`&`, `<`, `>`) directly in project data —
+do not hand-write HTML entities (`&amp;`, `&lt;`) to work around escaping,
+that now produces double-escaped text on the page.
+
 Dedicated project routes are rendered client-side as `/projects/<slug>`.
-Dedicated note routes are rendered as `/notes/<slug>`.
+Dedicated note routes are rendered as `/notes/<slug>`. `notesIndexPage()`
+sorts notes by `date` descending at render time, so entries in
+`content/notes.json` don't need to be stored in any particular order.
 
 ## Server/API
 

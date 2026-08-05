@@ -32,9 +32,8 @@ footer { position: fixed; left: 16px; bottom: 16px; font-size: 11px; color: #555
 .back { margin-bottom: 24px; }
 .note-list { display: grid; gap: 32px; margin-top: 28px; }
 .placeholder { width: 100%; aspect-ratio: 4 / 3; background: #0000ee; display: block; }
-.project-title, .project-description, .note-title, .note-excerpt { display: block; }
-.project-title, .note-title { margin-top: 6px; text-decoration: underline; }
-.project-description { margin-top: 2px; }
+.note-title, .note-excerpt { display: block; }
+.note-title { margin-top: 6px; text-decoration: underline; }
 .note-excerpt { margin-top: 2px; color: #555555; }
 h1, h2, p { font-size: inherit; font-weight: normal; margin: 0; }
 .prose { max-width: 620px; }

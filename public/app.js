@@ -2,6 +2,23 @@ const { escapeHtml, safeUrl, link, mediaBlock } = window.Billy;
 
 const projects = [
   {
+    slug: 'utsutsu',
+    title: 'utsutsu 現',
+    description: 'A screenshot tool for local web apps — a native macOS menu bar utility with a companion CLI, used to capture, gif, and review in-progress interface work.',
+    role: 'Product design, interaction design, and full-stack Swift / Node implementation',
+    status: 'Internal developer tool / ongoing — menu bar app is the primary interface, CLI kept for scripted use',
+    stack: 'Swift · AppKit · SwiftUI · WKWebView · Swift Package Manager · Node.js · Playwright (WebKit) · ImageIO',
+    overview: 'Utsutsu (現, "actuality") is the tool behind the tools: a screenshot utility purpose-built for capturing local web apps mid-development. A menu bar app opens a chrome-less preview window against any local URL, saves numbered screenshots on command, and can merge a capture run into an animated GIF. A CLI tool of the same name — the original version — still exists for scripted or terminal-based capture.',
+    details: [
+      ['menu bar app', 'Clicking the "u" menu bar icon opens a panel with a url and app-name field. "open" launches a chrome-less WKWebView preview window titled after the app name; cmd+s or the "capture" button in its title bar saves a numbered screenshot to ~/Desktop/<app-name>/.'],
+      ['window capture', 'A "window" button captures any other on-screen window — chosen through a custom in-app picker rather than Apple’s own screenshot tool — into the same numbered sequence as direct captures.'],
+      ['gif export', 'A "gif" button merges every screenshot captured so far for an app name, in capture order, into one looping animated GIF via Apple’s ImageIO — a batch step over existing PNGs, not a timer-based recording. Quality (resolution scale) and speed (per-frame delay) are both adjustable presets.'],
+      ['capture history', 'A translucent, horizontally scrolling thumbnail strip along the bottom of the preview window shows every screenshot captured for the current app name, loaded from disk on each open so history persists across sessions.'],
+      ['CLI tool', 'utsutsu.js, the original version, opens a WebKit window (via Playwright) against a dev server; pressing Enter captures the current view, and typing "full" captures the full page. Kept for scripted or terminal-based workflows, not deprecated.'],
+      ['safety and polish', 'App names are sanitized before touching the filesystem (blocking path traversal via ".." or "/"), long names truncate with a real ellipsis instead of clipping, and a full code-review pass fixed an unescaped-regex crash in the CLI, a misclassified dependency, and an unsanitized folder name before the first real capture session.']
+    ]
+  },
+  {
     slug: 'saisen',
     title: 'saisen 賽銭',
     description: 'A TikTok Live → Ableton Live bridge where audience gifts write into a shared loop — and the top gift permanently destroys the song.',
@@ -11,11 +28,11 @@ const projects = [
     overview: 'Saisen turns a livestream into a musical instrument. Viewers send TikTok gifts, and those gifts become actions inside an Ableton Live set: cheap gifts write a drum hit into a persistent, on-grid loop that stays in the song for the rest of the night, pricier gifts erase or reshape it, and the top gift triggers a destruction sequence that permanently and irreversibly deletes the set on stream. The destroyer is not just designed but demonstrated — two sacrificial Ableton sets have already been destroyed for real.',
     details: [
       ['the loop', 'The room builds the beat together. A gift writes its drum into a shared looping clip on the grid; a more expensive gift can erase what’s there or permanently change the state of the performance.'],
-      ['system flow', 'TikTok gift ingestion → streak resolution and coalescing → editable gift map → MIDI / AbletonOSC output → live music, dashboard, and audience overlay.'],
+      ['system flow', 'TikTok gift ingestion → streak resolution and coalescing → editable gift map → MIDI / AbletonOSC output → live music, an operator dashboard, and audience-facing overlay and ceremony browser sources.'],
       ['the destroyer', 'A gate, a deletion march, and a survivor coin make up the destruction sequence, with a save-all step verified along both branches. It has been run against real Ableton sets twice, not just tested in the sandbox.'],
       ['two faces', 'Saisen is the primary music-building face. matsuri (祭) is a festival face one toolbar click away: gifts can only launch and stop clips, the palette shifts to lantern light, and a separate gift table swaps in — the same gift can be a drum hit in saisen and a clip launch in matsuri.'],
       ['operator surface', 'A Flask + Socket.IO dashboard covers the live gift feed, arm/disarm and kill switch, a gift-catalog editor with live diffing against TikTok’s API, an Ableton structure/OSC/MIDI reference, and a guide rendered live from the repository so the manual can’t go stale.'],
-      ['engineering decisions', 'Gift-to-action mappings live in a comment-preserving TOML file so the creative system stays editable by hand and hot-reloads mid-show with no restart. The action vocabulary has grown past MIDI/OSC triggers into tempo and effect pulses, device toggles, fan-club reveals, and operator pledges.']
+      ['engineering decisions', 'Gift-to-action mappings live in a comment-preserving TOML file so the creative system stays editable by hand and hot-reloads mid-show with no restart. The action vocabulary has grown past MIDI/OSC triggers into tempo and effect pulses, device toggles, fan-club reveals that build a persistent on-screen name wall, and operator pledges.']
     ]
   },
   {
@@ -57,16 +74,16 @@ const projects = [
     title: 'kegare 穢れ',
     description: 'A music platform and personal archive for kegareSoft, built as a full-screen CRT terminal with a live, Claude-backed voice.',
     role: 'Creative direction, world-building, interaction design, full-stack engineering, and content system design',
-    status: 'Main website for kegareSoft / ongoing',
-    stack: 'Node.js · Express · Anthropic Claude API · Multer · vanilla HTML / CSS / JavaScript · Three.js · Server-Sent Events · Markdown · localStorage',
-    overview: 'Kegare is the main website for kegareSoft: a music-first archive shaped like a physical terminal, where the terminal is both the interface and the narrative device. Visitors can explore work, read journal entries, and talk with Kegare, a synthetic vocalist whose persona is defined by a swappable system-prompt file and whose memory is held locally in the visitor’s browser.',
+    status: 'Main website for kegareSoft / live at kegare.xyz — the live chat backend is not yet deployed',
+    stack: 'Node.js · Express · Anthropic Claude API · Multer · vanilla HTML / CSS / JavaScript · Three.js (CSS3D) · Server-Sent Events · Markdown · localStorage · GitHub Pages',
+    overview: 'Kegare is the main website for kegareSoft, now live at kegare.xyz: a music-first archive shaped like a physical terminal, entered through a directed 3D walk-up scene, where the terminal is both the interface and the narrative device. Visitors can explore work, read journal entries, and talk with Kegare, a synthetic vocalist whose persona is defined by a swappable system-prompt file and whose memory is held locally in the visitor’s browser.',
     details: [
       ['central idea', 'The website is a thesis on a creator’s life and work, told through a fiction: kegareSoft built synthetic singers, and Kegare is the one “defective” build whose flaw — the capacity to want, remember, and feel — is the only reason she can sing at all.'],
       ['interface', 'A green-phosphor CRT terminal replaces conventional site navigation, with command history, tab completion, and a tunable scanline/glow/vignette rig. A handful of commands are deliberately undocumented — the terminal only tells you to explore.'],
-      ['living intelligence', 'Kegare’s voice is defined by a single persona file streamed through the Claude API over server-sent events. Without an API key the server falls back to hand-written, in-character scripted lines, so the site still works with no live model behind it.'],
-      ['content system', 'A local, phosphor-themed CMS lets Brandon write journal entries in Markdown with inline photo, video, audio, and code blocks, then commit them to flat files and regenerate the journal index.'],
-      ['world and navigation', 'Two standalone proofs of concept point at where the site is headed: a PS1-style room where a cockroach avatar, Gokiburi, is steered around by keyboard, and a second scene where the live terminal itself is projected as CSS3D onto a 3D CRT object. Neither is wired into the main site yet.'],
-      ['technical approach', 'One small Express app serves the static frontend, streams chat over server-sent events, and mounts the CMS only when started separately. The frontend is plain ES modules with no bundler or build step.'],
+      ['living intelligence', 'Kegare’s voice is defined by a single persona file streamed through the Claude API over server-sent events. Without an API key the server falls back to hand-written, in-character scripted lines, so the site still works with no live model behind it — the same fallback the public deployment currently uses, since GitHub Pages can’t run the chat backend and a separate host for it isn’t live yet.'],
+      ['content system', 'A local, phosphor-themed CMS lets Billy write journal entries in Markdown with inline photo, video, audio, and code blocks, then commit them to flat files and regenerate the journal index.'],
+      ['the shared room', 'What were two standalone prototypes — a PS1-style room with a cockroach avatar, Gokiburi, and a separate CSS3D-projected terminal — are now one scene system on the live site. A scripted intro walks the roach from an outside landing through a door to the terminal, locks the camera head-on to the glass, and auto-advances into a full-screen readout; the whole picture is a letterboxed 4:3 frame graded to read as composite video on a tired CRT, with the 3D scene able to occlude the live terminal glass so the roach’s antennae can pass in front of the screen, not just behind it.'],
+      ['technical approach', 'The static frontend deploys to GitHub Pages at kegare.xyz; the Claude-backed chat endpoint is meant to run on a separate Node host, since Pages can’t run a server. One small Express app serves the static frontend locally, streams chat over server-sent events, and mounts the CMS only when started separately, with no bundler or build step.'],
       ['memory and care', 'The browser stores a visitor’s name, visit count, and rolling conversation in localStorage and replays it to the model each turn — nothing is kept server-side, and a visitor can wipe it with a “forget” command. The persona is explicitly written to drop the performance and go plain if a visitor sounds genuinely in pain.']
     ]
   },
@@ -146,31 +163,14 @@ const projects = [
     role: 'Product concept, interaction design, music taxonomy, and full-stack implementation',
     status: 'First project / on hold',
     stack: 'Next.js 16 · React 19 · TypeScript · Tailwind CSS v4 · Supabase · Spotify API · YouTube Data API · shadcn/ui · Vercel Analytics',
-    overview: 'Otoma — Sound Revolver was Brandon’s first project and the starting point for this body of work. It is built around a simple gesture: press a button, or tap a genre in a shifting type-cloud, and let the system choose what to hear next. Behind that gesture sits a hand-tuned genre and era model, a three-step Spotify retry ladder that keeps widening the search until something lands, filters, profiles, and a small social layer for keeping the songs that matter.',
+    overview: 'Otoma — Sound Revolver was Billy’s first project and the starting point for this body of work. It is built around a simple gesture: press a button, or tap a genre in a shifting type-cloud, and let the system choose what to hear next. Behind that gesture sits a hand-tuned genre and era model, a three-step Spotify retry ladder that keeps widening the search until something lands, filters, profiles, and a small social layer for keeping the songs that matter.',
     details: [
       ['core interaction', 'The home screen renders every genre as a word cloud sized by name length, alongside a single spin control. Pressing space, clicking spin, or tapping a genre directly all trigger a search; each spin returns one track from Spotify, or one YouTube result in alternate mode.'],
-      ['curation system', 'A single master genre list — centered on soul, funk, jazz, and R&amp;B lineages, with j-pop and j-rock as the “Asia” region — feeds the UI, validation, and API queries. An “00s” era filter reweights the same list toward genres that peaked in that decade.'],
+      ['curation system', 'A single master genre list — centered on soul, funk, jazz, and R&B lineages, with j-pop and j-rock as the “Asia” region — feeds the UI, validation, and API queries. An “00s” era filter reweights the same list toward genres that peaked in that decade.'],
       ['retry ladder', 'Each spin queries Spotify up to three times, widening the search on every miss: exact genre and year first, then a ±3-year window, then genre alone with a wider era tolerance. Results are filtered for usable artwork, name, and artist before one is picked at random.'],
       ['two listening modes', 'Spotify is the primary track-discovery path. YouTube mode reuses the same genre, appended with a randomized modifier (live, rare, vinyl, remastered, session) and sometimes a decade, to surface video and performance footage instead.'],
       ['personal layer', 'Authenticated listeners get a profile: saved favorites, a bio, a spotlight favorite, sticky notes on the profile, and follower / following counts. The discovery gesture stays public while what someone found and kept becomes personal.'],
       ['miku mode', 'A hidden toggle switches the interface into Japanese and restricts every spin to two hand-picked Hatsune Miku tracks — a small, deliberately overbuilt easter egg living in the same codebase as the main discovery engine.']
-    ]
-  },
-  {
-    slug: 'utsutsu',
-    title: 'utsutsu 現',
-    description: 'A screenshot tool for local web apps — a native macOS menu bar utility with a companion CLI, used to capture, gif, and review in-progress interface work.',
-    role: 'Product design, interaction design, and full-stack Swift / Node implementation',
-    status: 'Internal developer tool / ongoing — menu bar app is the primary interface, CLI kept for scripted use',
-    stack: 'Swift · AppKit · SwiftUI · WKWebView · Swift Package Manager · Node.js · Playwright (WebKit) · ImageIO',
-    overview: 'Utsutsu (現, "actuality") is the tool behind the tools: a screenshot utility purpose-built for capturing local web apps mid-development. A menu bar app opens a chrome-less preview window against any local URL, saves numbered screenshots on command, and can merge a capture run into an animated GIF. A CLI tool of the same name — the original version — still exists for scripted or terminal-based capture.',
-    details: [
-      ['menu bar app', 'Clicking the "u" menu bar icon opens a panel with a url and app-name field. "open" launches a chrome-less WKWebView preview window titled after the app name; cmd+s or the "capture" button in its title bar saves a numbered screenshot to ~/Desktop/&lt;app-name&gt;/.'],
-      ['window capture', 'A "window" button captures any other on-screen window — chosen through a custom in-app picker rather than Apple’s own screenshot tool — into the same numbered sequence as direct captures.'],
-      ['gif export', 'A "gif" button merges every screenshot captured so far for an app name, in capture order, into one looping animated GIF via Apple’s ImageIO — a batch step over existing PNGs, not a timer-based recording. Quality (resolution scale) and speed (per-frame delay) are both adjustable presets.'],
-      ['capture history', 'A translucent, horizontally scrolling thumbnail strip along the bottom of the preview window shows every screenshot captured for the current app name, loaded from disk on each open so history persists across sessions.'],
-      ['CLI tool', 'utsutsu.js, the original version, opens a WebKit window (via Playwright) against a dev server; pressing Enter captures the current view, and typing "full" captures the full page. Kept for scripted or terminal-based workflows, not deprecated.'],
-      ['safety and polish', 'App names are sanitized before touching the filesystem (blocking path traversal via ".." or "/"), long names truncate with a real ellipsis instead of clipping, and a full code-review pass fixed an unescaped-regex crash in the CLI, a misclassified dependency, and an unsanitized folder name before the first real capture session.']
     ]
   }
 ];
@@ -183,23 +183,23 @@ function shell(content, isHome) {
   const nav = isHome
     ? [link('/', 'billy'), link('/projects', 'projects'), link('/research', 'research'), link('/about', 'about'), link('/notes', 'notes')].join(' ')
     : link('/', 'billy');
-  return `<nav>${nav}</nav>${content}<footer>Made with 🚛❤️ by Brandon</footer>`;
+  return `<nav>${nav}</nav>${content}<footer>Made with 🚛❤️ by Billy</footer>`;
 }
 
 function projectPage(project) {
   const metadata = project.role
-    ? `<p class="prose project-meta"><strong>role</strong><br>${project.role}<br><br><strong>status</strong><br>${project.status}<br><br><strong>stack</strong><br>${project.stack}</p>`
+    ? `<p class="prose project-meta"><strong>role</strong><br>${escapeHtml(project.role)}<br><br><strong>status</strong><br>${escapeHtml(project.status)}<br><br><strong>stack</strong><br>${escapeHtml(project.stack)}</p>`
     : '';
-  const overview = project.overview ? `<p class="prose project-overview">${project.overview}</p>` : '';
+  const overview = project.overview ? `<p class="prose project-overview">${escapeHtml(project.overview)}</p>` : '';
   const details = project.details
-    ? `<div class="prose project-details">${project.details.map(([label, text]) => `<p><strong>${label}</strong><br>${text}</p>`).join('')}</div>`
+    ? `<div class="prose project-details">${project.details.map(([label, text]) => `<p><strong>${escapeHtml(label)}</strong><br>${escapeHtml(text)}</p>`).join('')}</div>`
     : '';
 
   return `
     <section class="page">
       <p class="back">${link('/projects', '← projects')}</p>
-      <h1>${project.title}</h1>
-      <p class="prose project-lede">${project.description}</p>
+      <h1>${escapeHtml(project.title)}</h1>
+      <p class="prose project-lede">${escapeHtml(project.description)}</p>
       ${metadata}
       <div class="media placeholder"></div>
       ${overview}
@@ -229,7 +229,8 @@ function projectsIndexPage() {
 }
 
 function notesIndexPage() {
-  const items = notes.map((note) => `<a href="${escapeHtml(safeUrl(`/notes/${note.slug}`))}"><span class="note-title">${escapeHtml(note.title)}</span><span class="note-excerpt">${escapeHtml(note.excerpt)}</span><span class="note-date">${escapeHtml(note.date || '')}</span></a>`).join('');
+  const sorted = notes.slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  const items = sorted.map((note) => `<a href="${escapeHtml(safeUrl(`/notes/${note.slug}`))}"><span class="note-title">${escapeHtml(note.title)}</span><span class="note-excerpt">${escapeHtml(note.excerpt)}</span><span class="note-date">${escapeHtml(note.date || '')}</span></a>`).join('');
   return `<section class="page"><div class="note-list">${items}</div></section>`;
 }
 
@@ -253,7 +254,7 @@ function researchPage() {
 function aboutPage() {
   return `
     <section class="page">
-      <p class="prose project-lede">Brandon Ocampo is a creative visual designer and programmer working across artificial intelligence, music, live systems, and brutalist interfaces.</p>
+      <p class="prose project-lede">Billy is a creative visual designer and programmer working across artificial intelligence, music, live systems, and brutalist interfaces.</p>
       <p class="prose project-overview">He releases music as Gokiburi, builds tools through kegareSoft, and treats software as both a medium and a place to think. The work moves between sound, image, performance, characters, and the systems that let other people participate.</p>
       <div class="prose project-details">
         <p><strong>practice</strong><br>Creative direction, interaction design, visual systems, full-stack development, native macOS tools, audio engineering, and experimental AI.</p>

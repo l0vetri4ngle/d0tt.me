@@ -47,7 +47,7 @@ function renderPreview() {
 
 function renderNotes() {
   document.querySelector('#notes-list').innerHTML = notes.map((note) =>
-    `<div class="saved-note"><a data-edit="${escapeHtml(note.slug)}">${escapeHtml(note.title)}</a><button type="button" data-delete="${escapeHtml(note.slug)}">delete</button></div>`
+    `<div class="saved-note"><button type="button" data-edit="${escapeHtml(note.slug)}">${escapeHtml(note.title)}</button><button type="button" data-delete="${escapeHtml(note.slug)}">delete</button></div>`
   ).join('');
 
   document.querySelectorAll('[data-edit]').forEach((item) => item.addEventListener('click', () => loadNote(item.dataset.edit)));

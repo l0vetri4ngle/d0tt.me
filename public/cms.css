@@ -32,8 +32,7 @@ button:hover { background: #000000; color: #ffffff; }
 #status { min-height: 1.25em; font-size: 11px; color: #0000ee; }
 .saved-note { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: baseline; border-bottom: 1px solid #000000; padding: 8px 0; }
 .saved-note:first-child { border-top: 1px solid #000000; }
-.saved-note a { cursor: pointer; text-decoration: underline; }
-.saved-note button { border: 0; padding: 0; text-decoration: underline; }
+.saved-note button { border: 0; padding: 0; text-decoration: underline; text-align: left; justify-self: start; }
 .saved-note button:hover { background: transparent; color: #0000ee; }
 .preview-label { margin-top: 32px; }
 #preview { max-width: 620px; border: 1px solid transparent; padding: 16px 0; }
