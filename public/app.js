@@ -4,6 +4,7 @@ const projects = [
   {
     slug: 'utsutsu',
     title: 'utsutsu 現',
+    image: '/media/projects/utsutsu-00.png',
     description: 'A screenshot tool for local web apps — a native macOS menu bar utility with a companion CLI, used to capture, gif, and review in-progress interface work.',
     role: 'Product design, interaction design, and full-stack Swift / Node implementation',
     status: 'Internal developer tool / ongoing — menu bar app is the primary interface, CLI kept for scripted use',
