@@ -21,6 +21,7 @@ const projects = [
   {
     slug: 'saisen',
     title: 'saisen 賽銭',
+    image: '/media/projects/saisen-00.png',
     description: 'A TikTok Live → Ableton Live bridge where audience gifts write into a shared loop — and the top gift permanently destroys the song.',
     role: 'Creative direction, interaction design, software architecture, and implementation',
     status: 'Ongoing / show-ready — feature-complete and tested, not yet performed live',
@@ -38,6 +39,7 @@ const projects = [
   {
     slug: 'himei',
     title: 'himei 悲鳴',
+    image: '/media/projects/himei-00.png',
     description: 'A lightweight soundboard for livestreams, built for instant playback and clear routing.',
     role: 'Product design, interaction design, C++ / JUCE engineering, and interface implementation',
     status: 'Native macOS application — v1.0.0 shipped, ongoing',
@@ -55,6 +57,7 @@ const projects = [
   {
     slug: 'nue',
     title: 'nue 鵺',
+    image: '/media/projects/nue-00.png',
     description: 'A face-chaos collage tool and live performance rig for a VTuber avatar layer.',
     role: 'Creative direction, interaction design, computer-vision pipeline, and full-stack implementation',
     status: 'Ongoing / livestream tool',
@@ -72,6 +75,7 @@ const projects = [
   {
     slug: 'kegare',
     title: 'kegare 穢れ',
+    image: '/media/projects/kegare-00.png',
     description: 'A music platform and personal archive for kegareSoft, built as a full-screen CRT terminal with a live, Claude-backed voice.',
     role: 'Creative direction, world-building, interaction design, full-stack engineering, and content system design',
     status: 'Main website for kegareSoft / live at kegare.xyz — the live chat backend is not yet deployed',
@@ -90,6 +94,7 @@ const projects = [
   {
     slug: 'kasane',
     title: 'kasane 重ね',
+    image: '/media/projects/kasane-00.png',
     description: 'A native real-time audio effects chain and lightweight multitrack recorder for routing input through VST3 and AU plugins.',
     role: 'Product direction, interaction design, C++ / JUCE engineering, and audio-system architecture',
     status: 'Native macOS application / ongoing — audit-and-polish pass across UI and core is complete; next up is non-destructive effects on recordings',
@@ -107,6 +112,7 @@ const projects = [
   {
     slug: 'yomi',
     title: 'yomi 黄泉',
+    image: '/media/projects/yomi-00.png',
     description: 'A real-time AI voice agent for TikTok Live that can listen, see, remember, and speak.',
     role: 'Product direction, conversational design, full-stack engineering, audio systems, and persona development',
     status: 'Ongoing / livestream voice agent',
@@ -125,6 +131,7 @@ const projects = [
   {
     slug: 'aomori',
     title: 'aomori 青森',
+    image: '/media/projects/aomori-00.png',
     description: 'A focused drum-sample renaming tool that turns a loose folder of sounds into a usable named library.',
     role: 'Product direction, interface design, interaction logic, and full-stack implementation',
     status: 'Web app and native macOS application',
@@ -142,6 +149,7 @@ const projects = [
   {
     slug: 'fumei',
     title: 'fumei 不明',
+    image: '/media/projects/fumei-00.png',
     description: 'A single-page image editor for hue, saturation, brightness, and three-way color balance, adjusted live in the browser.',
     role: 'Concept, interface design, and implementation',
     status: 'Early-stage prototype / in progress',
@@ -159,6 +167,7 @@ const projects = [
   {
     slug: 'otoma',
     title: 'otoma おとま',
+    image: '/media/projects/otoma-01.png',
     description: 'A music discovery tool that spins a curated soul, jazz, and j-pop genre map into one unexpected track at a time.',
     role: 'Product concept, interaction design, music taxonomy, and full-stack implementation',
     status: 'First project / on hold',
@@ -194,6 +203,9 @@ function projectPage(project) {
   const details = project.details
     ? `<div class="prose project-details">${project.details.map(([label, text]) => `<p><strong>${escapeHtml(label)}</strong><br>${escapeHtml(text)}</p>`).join('')}</div>`
     : '';
+  const media = project.image
+    ? `<img src="${escapeHtml(safeUrl(project.image))}" alt="${escapeHtml(project.title)}">`
+    : '';
 
   return `
     <section class="page">
@@ -201,7 +213,7 @@ function projectPage(project) {
       <h1>${escapeHtml(project.title)}</h1>
       <p class="prose project-lede">${escapeHtml(project.description)}</p>
       ${metadata}
-      <div class="media placeholder"></div>
+      <div class="media placeholder">${media}</div>
       ${overview}
       ${details}
       <p class="prose">Images, GIFs, video, audio, and process notes can be added here as the work develops.</p>

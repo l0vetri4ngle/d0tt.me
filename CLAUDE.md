@@ -156,6 +156,17 @@ with `codeshit/utsutsu`, built for exactly this):
    in `projectPage()`, not after them. Same flush, borderless treatment
    `mediaBlock()` already applies to note media — no new visual language,
    just extending the one that exists.
+   Screenshots taken with utsutsu's "window" capture (rather than its
+   flush, chrome-less app preview) carry a native drop shadow and rounded
+   corners baked in as transparent PNG padding, and every capture ends up
+   a different aspect ratio. Filling `.placeholder`'s fixed 4:3 box with
+   `object-fit: cover` was tried and rejected: cover crops based on the
+   full canvas including that invisible padding, so it unpredictably
+   either crops into real UI or exposes the blue background through the
+   transparent margin, depending on each image's own ratio. `object-fit:
+   contain` is the correct choice here — it always shows the full
+   screenshot, letterboxing any mismatch in the placeholder's own blue
+   rather than cropping content away.
 2. **Concept, tightened.** The lede and a short framing of the idea stay
    near the top, close to the image — a caption more than a case study.
    Design intent legible in a sentence or two, not a paragraph.

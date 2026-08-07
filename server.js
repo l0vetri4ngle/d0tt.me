@@ -137,12 +137,16 @@ async function handleApi(request, response, requestedPath) {
   }
 
   if (requestedPath.startsWith('/api/notes/') && request.method === 'DELETE') {
-    const slug = cleanSlug(requestedPath.slice('/api/notes/'.length));
-    const notes = await readNotes();
-    const next = notes.filter((note) => note.slug !== slug);
-    await writeNotes(next);
-    await pruneOrphanedMedia(notes, next);
-    sendJson(response, 200, { ok: true });
+    try {
+      const slug = cleanSlug(requestedPath.slice('/api/notes/'.length));
+      const notes = await readNotes();
+      const next = notes.filter((note) => note.slug !== slug);
+      await writeNotes(next);
+      await pruneOrphanedMedia(notes, next);
+      sendJson(response, 200, { ok: true });
+    } catch {
+      sendJson(response, 500, { error: 'could not delete note' });
+    }
     return true;
   }
 
