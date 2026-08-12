@@ -214,7 +214,7 @@ function projectPage(project) {
       <h1>${escapeHtml(project.title)}</h1>
       <p class="prose project-lede">${escapeHtml(project.description)}</p>
       ${metadata}
-      <div class="media placeholder">${media}</div>
+      <div class="media placeholder">${media ? `<div class="placeholder-frame">${media}</div>` : ''}</div>
       ${overview}
       ${details}
       <p class="prose">Images, GIFs, video, audio, and process notes can be added here as the work develops.</p>
@@ -306,8 +306,9 @@ function render() {
 window.addEventListener('popstate', render);
 
 document.addEventListener('click', (event) => {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   const anchor = event.target.closest('a');
-  if (!anchor || anchor.origin !== window.location.origin || anchor.target === '_blank') return;
+  if (!anchor || anchor.origin !== window.location.origin || anchor.target === '_blank' || anchor.hasAttribute('download')) return;
   event.preventDefault();
   history.pushState({}, '', anchor.pathname);
   render();

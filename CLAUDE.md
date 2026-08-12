@@ -32,6 +32,12 @@ Useful routes:
 The server is intentionally bound to `127.0.0.1`. The CMS is local-only and is
 not intended to be exposed directly to the public internet.
 
+The `tetobbygrl/` directory at the repo root is a known leftover — duplicate
+copies of the same screenshots already in `public/media/projects/`, from an
+old default output folder of the `codeshit/utsutsu` capture tool. Nothing in
+the site or build scripts reads from it. It's kept intentionally rather than
+removed; don't delete it as part of unrelated cleanup work.
+
 ## CMS workflow
 
 1. Start the server with `npm start`.
@@ -139,6 +145,13 @@ Dedicated note routes are rendered as `/notes/<slug>`. `notesIndexPage()`
 sorts notes by `date` descending at render time, so entries in
 `content/notes.json` don't need to be stored in any particular order.
 
+The document-level click handler in `app.js` that intercepts same-origin
+anchor clicks for client-side routing checks `event.button`, the modifier
+keys, and `download`/`target="_blank"` before calling `preventDefault()`.
+Keep that guard — without it, a plain click handler hijacks cmd/ctrl-click
+and middle-click, which should open a link in a new tab rather than
+navigate the current one.
+
 ## Project pages — visual direction (planned, not yet implemented)
 
 Project pages currently lead with prose: a lede, a role/status/stack block,
@@ -167,6 +180,21 @@ with `codeshit/utsutsu`, built for exactly this):
    contain` is the correct choice here — it always shows the full
    screenshot, letterboxing any mismatch in the placeholder's own blue
    rather than cropping content away.
+   The box itself (`.placeholder` in `public/styles.css`) gets its 4:3
+   ratio from a `padding-top: 75%` box-model hack, not the CSS
+   `aspect-ratio` property. An earlier version used `aspect-ratio` on
+   `.placeholder` plus `width/height: 100%` on the `<img>` to drive
+   `object-fit: contain`, and that combination renders inconsistently
+   on mobile Safari — the image's percentage sizing isn't reliably
+   resolved against a height that exists only via `aspect-ratio`, so a
+   tall capture (yomi's portrait screenshot) overflowed the blue box on
+   phones while looking correct on desktop. The current markup wraps
+   the image in a `.placeholder-frame` div (absolutely positioned,
+   inset 16px) with the `<img>` itself absolutely positioned at
+   `inset: 0; width/height: 100%`, which avoids that ambiguity, and
+   `.placeholder` carries `overflow: hidden` as a backstop. Keep this
+   structure rather than collapsing it back to a bare `aspect-ratio`
+   box if screenshots of unusual aspect ratios are added later.
 2. **Concept, tightened.** The lede and a short framing of the idea stay
    near the top, close to the image — a caption more than a case study.
    Design intent legible in a sentence or two, not a paragraph.
